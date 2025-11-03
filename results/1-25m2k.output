@@ -1,0 +1,46 @@
+Default bit length for compilation: 63
+Default security parameter for compilation: 40
+Compiling file Programs/Source/my_protocol1-25m.mpc
+Changed bit length for comparisons etc. to 63
+WARNING: Order of memory instructions not preserved, errors possible
+my_protocol1-25m-0-begin-loop-3 blowing up rounds:  (1250000 / 1250000) ** 3 < 1250000
+my_protocol1-25m-0-begin-loop-9 blowing up rounds:  (10000 / 10000) ** 3 < 10000
+my_protocol1-25m-0-begin-loop-20 blowing up rounds:  (20000 / 10000) ** 3 < 20000
+my_protocol1-25m-0-begin-loop-27 blowing up rounds:  (1250000 / 1250000) ** 3 < 1250000
+my_protocol1-25m-0-begin-loop-26 blowing up rounds:  (12500010000 / 10000) ** 3 < 12500010000
+Writing to Programs/Schedules/my_protocol1-25m.sch
+Writing to Programs/Bytecode/my_protocol1-25m-0.bc
+Hash: 878ea5855cf2bb5312078439a26d24a8311851b8bf6f4dda0f14f1901b7b99dc
+Program requires at most:
+ 37501270000 integer opens
+ 12501290000 virtual machine rounds
+Using security parameter 40
+Trying to run 64-bit computation
+Starting... (Num Users 1250000 : Test Num 10000)
+Registering Users...
+Starting timer 1 at 0 (0 MB, 0 rounds) after 9.482e-06
+Stopped timer 1 at 58.2962 (10 MB, 2500000 rounds)
+Verification Test...
+Starting timer 2 at 0 (0 MB, 0 rounds) after 4.438e-06
+Stopped timer 2 at 3396.81 (100000 MB, 20000 rounds)
+Validation Test...
+Starting timer 3 at 0 (0 MB, 0 rounds) after 2.072e-06
+Stopped timer 3 at 0.901909 (0.16 MB, 40000 rounds)
+Starting timer 4 at 0 (0 MB, 0 rounds) after 4.722e-06
+Stopped timer 4 at 2781.98 (100000 MB, 40000 rounds)
+
+Num Users = 1250000
+Time = Total
+Time1 = Register
+Time2 = Verify
+Time3 = Validate
+Time4 = Trace
+
+The following benchmarks are including preprocessing (offline phase).
+Time = 6238 seconds 
+Time1 = 58.2962 seconds (10 MB, 2500000 rounds)
+Time2 = 3396.81 seconds (100000 MB, 20000 rounds)
+Time3 = 0.901909 seconds (0.16 MB, 40000 rounds)
+Time4 = 2781.98 seconds (100000 MB, 40000 rounds)
+Data sent = 200010 MB in ~2600030 rounds (party 0 only; use '-v' for more details)
+Global data sent = 400021 MB (all parties)

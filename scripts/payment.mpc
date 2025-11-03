@@ -1,0 +1,77 @@
+import random as rand
+import numpy as np
+from Compiler import library as lib, oram, path_oram
+from Compiler.program import Tape
+from Compiler.types import _secret
+
+# rand.seed(12345)
+
+NUM_TOKENS = 1000000
+# ids_int = np.random.randint(1000000, 10000000, size=NUM_TOKENS)
+
+# ids = Array(NUM_TOKENS, cint)
+tokens = Array(NUM_TOKENS, sint)
+mask = Array(NUM_TOKENS, sint)
+flag = Array(NUM_TOKENS, sint)
+_count = cint(0)
+delta = Array(NUM_TOKENS, cint)
+
+
+# for i in range(len(ids_int)):
+#     ids[i] = cint(ids_int[i])
+
+def Token_Issuance():
+    global tokens
+    global flag
+
+    flag.assign_all(1)
+    @for_range(NUM_TOKENS)
+    def _(i):
+        # print_ln("%s", i, print_secrets=True)
+        tokens[i] = sint.get_random_int(32)
+        # print_ln("%s", i)
+        tokens[i].reveal()
+
+def Token_Reimbersement(tid):
+    global tokens
+    global mask
+    global flag
+    global _count
+    global delta
+
+    delta[:] = (tokens - tid).reveal()
+
+    _count.update(0)
+    
+    @for_range(NUM_TOKENS)
+    def _(i):
+        val = delta[i]
+        @if_e(val == 0)
+        def _():
+            mask[i].update(0)
+        @else_
+        def _():
+            global _count
+            mask[i].update(1)
+            _count += 1
+            pass
+    
+    @if_e(_count == (NUM_TOKENS - 1))
+    def _():
+        pass
+    @else_
+    def _():
+        mask.assign_all(1)
+
+    flag[:] = flag * mask 
+
+
+lib.start_timer(1)
+Token_Issuance()
+lib.stop_timer(1)
+
+lib.start_timer(2)
+@for_range(1000)
+def _(i):
+    Token_Reimbersement(tokens[i])   
+lib.stop_timer(2)

@@ -1,0 +1,25 @@
+Default bit length for compilation: 63
+Default security parameter for compilation: 40
+Compiling file Programs/Source/my_test_6mil.mpc
+Changed bit length for comparisons etc. to 63
+WARNING: Order of memory instructions not preserved, errors possible
+Writing to Programs/Schedules/my_test_6mil.sch
+Writing to Programs/Bytecode/my_test_6mil-0.bc
+Hash: 0cde2108841fa35e66379df42a76c94ecd1f2fd9d423ff61b2e84d0035ff8f9b
+Program requires at most:
+   192000000 integer bits
+  6006000000 integer opens
+  6000000000 integer triples
+     6002000 virtual machine rounds
+Using statistical security parameter 40
+Trying to run 64-bit computation
+Starting timer 1 at 0 (0 MB, 0 rounds) after 7.703e-06
+Stopped timer 1 at 660.155 (1596.38 MB, 12937503 rounds)
+Starting timer 2 at 0 (0 MB, 0 rounds) after 4.473e-06
+Stopped timer 2 at 102094 (6.32222e+06 MB, 54004000 rounds)
+The following benchmarks are including preprocessing (offline phase).
+Time = 102755 seconds 
+Time1 = 660.155 seconds (1596.38 MB, 12937503 rounds)
+Time2 = 102094 seconds (6.32222e+06 MB, 54004000 rounds)
+Data sent = 6.32381e+06 MB in ~66941503 rounds (party 0 only; use '-v' for more details)
+Global data sent = 1.26487e+07 MB (all parties)

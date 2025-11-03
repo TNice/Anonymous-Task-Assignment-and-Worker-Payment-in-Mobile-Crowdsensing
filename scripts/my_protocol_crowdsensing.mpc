@@ -1,0 +1,118 @@
+import random as rand
+import numpy as np
+from Compiler import library as lib, oram, path_oram
+
+users = []
+count = 0
+
+def Register(_id, i):
+    global count
+    
+    key = sint(rand.randint(0,1000))
+    val = _id + key
+
+    #store id, key
+    registered_ids[i] = val
+    registered_keys[i] = key
+
+    #send shares to w
+    return val.reveal()
+
+def Verify(_id):
+    global registered_ids
+    global values
+
+    values[:] = (registered_ids - _id).reveal()
+
+    @for_range(len(registered_ids))
+    def _(i):
+        val = values[i]
+        @if_e(val == 0)
+        def _():
+            return True
+        @else_
+        def _():
+            pass
+    return False
+
+##Prevalidate is Ownership Protocol Lines 1-2
+def PreValidate(_id):
+    challenge = sint(rand.randint(0, 1000))
+    #not sure best way to keep challenge with server
+    return (_id + challenge).reveal(), challenge #using as sending to user not sure if better way to do this in mpsdz
+
+##Validate is Ownership Protocol Lines 4-6 Note that line 3 is done below with v' = Prevalidate - user_id
+def Validate(v, key, challenge):
+    challenge_prime = v - (key + challenge)
+    return (challenge_prime.reveal() == 0)
+
+def Trace(_id):
+    global registered_keys
+    global registered_ids
+    global values
+
+    idx = -1
+    values[:] = (registered_ids - _id).reveal()
+
+    @for_range(len(registered_ids))
+    def _(i):
+        @if_e(values[i] == 0)
+        def _(): 
+            return (registered_ids[i] - registered_keys[i]).reveal()
+        @else_
+        def _():
+            pass
+        
+    return cint(-1)
+       
+NUM_USERS = 750000
+TEST_NUM = 10000
+users = Array(NUM_USERS, sint)
+values = Array(NUM_USERS, cint)
+registered_ids = Array(NUM_USERS, sint)
+registered_keys = Array(NUM_USERS, sint)
+
+print_ln("Starting... (Num Users %s : Test Num %s)", NUM_USERS, TEST_NUM)
+
+print_ln("Registering Users...")
+lib.start_timer(1)
+
+@for_range(NUM_USERS)
+def _(i):
+    users[i] = Register(sint(i), i)
+
+lib.stop_timer(1)
+
+print_ln("Verification Test...")
+
+lib.start_timer(2)
+
+@for_range(TEST_NUM)
+def _(i):
+    Verify(users[i])
+
+lib.stop_timer(2)
+
+print_ln("Validation Test...")
+
+lib.start_timer(3)
+
+#Ownership protocall consists of the prevalidate and validate functions
+
+@for_range(TEST_NUM)
+def _(i):
+    v, challenge = PreValidate(users[i])
+    v_prime = sint(v - i)
+    Validate(v_prime, registered_keys[i], challenge)
+
+lib.stop_timer(3)
+
+lib.start_timer(4)
+
+@for_range(TEST_NUM)
+def _(i):
+    Trace(users[i])
+
+lib.stop_timer(4)
+
+print_ln("\nNum Users = %s\nTime = Total\nTime1 = Register\nTime2 = Verify\nTime3 = Validate\nTime4 = Trace\n", NUM_USERS)
